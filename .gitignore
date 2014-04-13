@@ -7,3 +7,5 @@ local/
 
 *.jpg
 *.png
+
+*.pyc

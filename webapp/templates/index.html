@@ -1,0 +1,70 @@
+<style>
+  body {
+    background-color: #222;
+    color: #FFF;
+  }
+  div#wallpapers {
+    margin-left: auto;
+    margin-right: auto;
+    width: 95%;
+  }
+  div.wallpaper {
+    width: 20em;
+    display: inline-block;
+    padding: 1em;
+  }
+  div.wallpaper img { 
+    width: 100%; 
+  }
+  div.wallpaper li.tag {
+    border-bottom: 2px solid #D1D1FF;
+    display: inline;
+    margin-left: 5px;
+  }
+</style>
+<script src="http://fb.me/react-0.10.0.js"></script>
+<script src="http://fb.me/JSXTransformer-0.10.0.js"></script>
+<script src="http://code.jquery.com/jquery-1.10.0.min.js"></script>
+<script type="text/jsx">
+  /** @jsx React.DOM */
+
+  var Wallpaper = React.createClass({
+    handleClick: function() {
+      console.log('Clicked!');
+    },
+    render: function() {
+      listStyle={display: 'inline-block'};
+      return <div className="wallpaper">
+              <img src={this.props.src} onClick={this.handleClick} />
+              <label for='sfw'>SFW?</label>
+              <input type='checkbox' checked={this.props.sfw} />
+              <ul style={listStyle}>
+                {this.props.tags.map(function(tag) { return <li className="tag">{tag}</li>; })}
+              </ul>
+             </div>
+    }
+  });
+  
+  var WallpaperContainer = React.createClass({
+    getInitialState: function() {
+      // Assume jQuery. Also very ugly.
+      d = JSON.parse('{"wallpapers": {{ untagged_wallpapers|tojson|safe }}}');
+      console.log(d);
+      return d;
+    },
+    render: function() {
+      return <div>
+              <h1>Wallpapers!</h1>
+              {this.state.wallpapers.map(function (wallpaper) {
+                console.log(wallpaper.sfw);
+                return <Wallpaper src={wallpaper.src} sfw={wallpaper.sfw}
+                                  tags={wallpaper.tags} />;
+              })}
+            </div>
+    }
+  });
+  
+  React.renderComponent(<WallpaperContainer />, document.getElementById('wallpapers'));
+</script>
+
+<div id='wallpapers'></div>

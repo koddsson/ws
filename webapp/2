@@ -1,0 +1,29 @@
+<script src="http://fb.me/react-0.10.0.js"></script>
+<script src="http://fb.me/JSXTransformer-0.10.0.js"></script>
+<script src="http://code.jquery.com/jquery-1.10.0.min.js"></script>
+<script type="text/jsx">
+  /** @jsx React.DOM */
+
+  var WallpaperList = React.createClass({
+    render: function() {
+      return <div>
+              <img src={this.props.src}/>
+             </div>
+    }
+  });
+  
+  var WallpaperContainer = React.createClass({
+    render: function() {
+      return <div>
+              <h1>Wallpapers!</h1>
+              <ContainerList />
+            </div>
+    }
+  });
+  
+  React.renderComponent(<WallpaperContainer />, document.getElementsById('wallpapers'));
+</script>
+
+{% for wallpaper in untagged_wallpapers %}
+  <div id='wallpapers'></div>
+{% endfor %}
